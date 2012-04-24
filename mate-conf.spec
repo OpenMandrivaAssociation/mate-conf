@@ -25,6 +25,7 @@ BuildRequires:	gtk-doc >= 1.0
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	pkgconfig(dbus-glib-1)
 BuildRequires:	pkgconfig(polkit-gobject-1)
+BuildRequires:	intltool >= 0.25
 
 %description
 MateConf is a configuration database system, functionally similar to the
