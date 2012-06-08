@@ -8,11 +8,15 @@
 Name:		mate-conf
 Summary:	MATE configuration database system
 Version:	1.2.1
-Release:	2
+Release:	3
 License:	GPLv3+
 Group:		Graphical desktop/Other
 URL:		http://www.mate-desktop.org
 Source0:	http://pub.mate-desktop.org/releases/1.2/%{name}-%{version}.tar.xz
+Source1:	mateconf.sh
+Source2:	mateconf.csh
+Source3:	mateconf-schemas.filter
+Source4:	mateconf-schemas.script
 Patch0:		mate-conf-1.2.1-configure.patch
 Patch1:		mate-conf-1.2.1-m4.patch
 
@@ -38,7 +42,7 @@ Summary:	Sanity checker for %{name}
 Group:		%{group}
 
 %description -n mateconf-sanity-check
-gconf-sanity-check is a tool to check the sanity of a %{name}
+mateconf-sanity-check is a tool to check the sanity of a %{name}
 installation.
 
 %package -n %{libname}
@@ -59,6 +63,7 @@ GObject introspection interface library for %{name}.
 %package -n %{devname}
 Summary:        Mate-conf development files
 Group:          Development/C
+Requires:	%{name} = %{version}
 Requires:	%{libname} = %{version}
 Requires:	%{girname} = %{version}
 Provides:	%{name}-devel = %{version}
@@ -82,22 +87,57 @@ NOCONFIGURE=yes ./autogen.sh
 %install
 %makeinstall_std
 
+mkdir -p %{buildroot}%{_sysconfdir}/profile.d
+install -m 755 %{SOURCE1} %{buildroot}%{_sysconfdir}/profile.d/mateconf.sh
+install -m 755 %{SOURCE2} %{buildroot}%{_sysconfdir}/profile.d/mateconf.csh
+
+mkdir %{buildroot}%{_sysconfdir}/mateconf/schemas
+
+# Provide /usr/lib/mateconfd-2 symlink on lib64 platforms
+%if "%{_lib}" != "lib"
+mkdir -p %{buildroot}%{_prefix}/lib
+ln -s ../%{_lib}/mateconfd-%{api} %{buildroot}%{_prefix}/lib/mateconfd-%{api}
+%endif
+
+mkdir -p %{buildroot}%{_sysconfdir}/mateconf/{mateconf.xml.local-defaults,mateconf.xml.local-mandatory,mateconf.xml.system}
+
+cat << EOF > %{buildroot}%{_sysconfdir}/mateconf/2/local-defaults.path
+xml:readonly:/etc/mateconf/mateconf.xml.local-defaults
+include "\$(HOME)/.mateconf.path.defaults"
+EOF
+
+cat << EOF > %{buildroot}%{_sysconfdir}/mateconf/2/local-mandatory.path
+xml:readonly:/etc/mateconf/mateconf.xml.local-mandatory
+include "\$(HOME)/.mateconf.path.mandatory"
+EOF
+
+# automatic install of mateconf schemas on rpm installs
+# (see http://wiki.mandriva.com/en/Rpm_filetriggers)
+install -d %{buildroot}%{_var}/lib/rpm/filetriggers
+install -m 644 %{SOURCE3} %{buildroot}%{_var}/lib/rpm/filetriggers
+install -m 755 %{SOURCE4} %{buildroot}%{_var}/lib/rpm/filetriggers
+
 %find_lang %{name}
 
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog NEWS README TODO
-%config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.mate.MateConf.Defaults.conf
 %dir %{_sysconfdir}/mateconf/
-%config(noreplace) %{_sysconfdir}/mateconf/*
+%config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.mate.MateConf.Defaults.conf
+%config(noreplace) %{_sysconfdir}/mateconf/%{api}
+%config(noreplace) %{_sysconfdir}/profile.d/*
 %{_bindir}/mateconf*
 %{_libdir}/MateConf/2/
 %{_libexecdir}/mateconf-defaults-mechanism
-%{_libexecdir}/mateconfd-2
+%{_libexecdir}/mateconfd-%{api}
+%if "%{_lib}" != "lib"
+%{_prefix}/lib/mateconfd-%{api}
+%endif
 %{_datadir}/MateConf/
 %{_datadir}/dbus-1/*/org.mate.MateConf.*
 %{_mandir}/man1/mateconftool-2.1*
 %{_datadir}/polkit-1/actions/org.mate.mateconf.defaults.policy
 %{_datadir}/sgml/mateconf/
+%{_var}/lib/rpm/filetriggers/mateconf-schemas.*
 
 %files -n mateconf-sanity-check
 %{_libexecdir}/mateconf-sanity-check-2
