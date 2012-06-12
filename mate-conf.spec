@@ -8,7 +8,7 @@
 Name:		mate-conf
 Summary:	MATE configuration database system
 Version:	1.2.1
-Release:	3
+Release:	4
 License:	GPLv3+
 Group:		Graphical desktop/Other
 URL:		http://www.mate-desktop.org
@@ -122,6 +122,8 @@ install -m 755 %{SOURCE4} %{buildroot}%{_var}/lib/rpm/filetriggers
 %files -f %{name}.lang
 %doc AUTHORS ChangeLog NEWS README TODO
 %dir %{_sysconfdir}/mateconf/
+%dir %{_sysconfdir}/mateconf/mateconf.xml*
+%dir %{_sysconfdir}/mateconf/schemas
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/org.mate.MateConf.Defaults.conf
 %config(noreplace) %{_sysconfdir}/mateconf/%{api}
 %config(noreplace) %{_sysconfdir}/profile.d/*
@@ -134,9 +136,9 @@ install -m 755 %{SOURCE4} %{buildroot}%{_var}/lib/rpm/filetriggers
 %endif
 %{_datadir}/MateConf/
 %{_datadir}/dbus-1/*/org.mate.MateConf.*
-%{_mandir}/man1/mateconftool-2.1*
 %{_datadir}/polkit-1/actions/org.mate.mateconf.defaults.policy
 %{_datadir}/sgml/mateconf/
+%{_mandir}/man1/mateconftool-2.1*
 %{_var}/lib/rpm/filetriggers/mateconf-schemas.*
 
 %files -n mateconf-sanity-check
