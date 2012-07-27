@@ -7,8 +7,8 @@
 
 Name:		mate-conf
 Summary:	MATE configuration database system
-Version:	1.2.1
-Release:	4
+Version:	1.4.0
+Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
 URL:		http://www.mate-desktop.org
