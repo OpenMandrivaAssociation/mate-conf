@@ -1,0 +1,12 @@
+Index: mate-conf-1.2.1/configure.in
+===================================================================
+--- mate-conf-1.2.1.orig/configure.in
++++ mate-conf-1.2.1/configure.in
+@@ -41,6 +41,7 @@ AC_HEADER_STDC
+ AC_LIBTOOL_WIN32_DLL
+ AM_PROG_LIBTOOL
+ AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal)
++AM_PROG_CC_C_O
+ 
+ changequote(,)dnl
+ if test "x$GCC" = "xyes"; then
