@@ -12,7 +12,7 @@ Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
 URL:		http://www.mate-desktop.org
-Source0:	http://pub.mate-desktop.org/releases/1.2/%{name}-%{version}.tar.xz
+Source0:	http://pub.mate-desktop.org/releases/1.4/%{name}-%{version}.tar.xz
 Source1:	mateconf.sh
 Source2:	mateconf.csh
 Source3:	mateconf-schemas.filter
@@ -66,8 +66,7 @@ Group:          Development/C
 Requires:	%{name} = %{version}
 Requires:	%{libname} = %{version}
 Requires:	%{girname} = %{version}
-Provides:	%{name}-devel = %{version}
-Obsoletes:	%{_lib}mateconf2-devel < 1.2.1-2
+Provides:	%{name}-devel = %{EVRD}
 
 %description -n %{devname}
 MateConf is a configuration database system, functionally similar to the
@@ -81,6 +80,7 @@ NOCONFIGURE=yes ./autogen.sh
 %configure2_5x \
 	--enable-defaults-service \
 	--enable-gsettings-backend=no \
+	--enable-gtk \
 	--disable-static
 %make
 
@@ -157,4 +157,30 @@ install -m 755 %{SOURCE4} %{buildroot}%{_var}/lib/rpm/filetriggers
 %{_datadir}/aclocal/mateconf-2.m4
 %{_datadir}/gir-1.0/MateConf-%{girmajor}.gir
 %{_datadir}/gtk-doc/html/mateconf/
+
+
+
+%changelog
+* Fri Jul 27 2012 Matthew Dawkins <mattydaw@mandriva.org> 1.4.0-1
++ Revision: 811328
+- new version 1.4.0
+
+* Tue Jun 12 2012 Matthew Dawkins <mattydaw@mandriva.org> 1.2.1-4
++ Revision: 805246
+- rebuild to make sure sysconfdir mateconf dirs are pkgd
+
+* Fri Jun 08 2012 Matthew Dawkins <mattydaw@mandriva.org> 1.2.1-3
++ Revision: 803515
+- rebuild - copied over filetrigger support from GConf2
+- made dev pkg require mate-conf
+
+* Sat Jun 02 2012 Matthew Dawkins <mattydaw@mandriva.org> 1.2.1-2
++ Revision: 802050
+- rebuild for mateconf-sanity-check
+- split out gir pkg
+- utilize api
+
+* Tue Apr 24 2012 Dmitry Mikhirev <dmikhirev@mandriva.org> 1.2.1-1
++ Revision: 793133
+- imported package mate-conf
 

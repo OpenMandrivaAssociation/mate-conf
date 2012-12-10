@@ -1,0 +1,8 @@
+#!/bin/sh
+
+mateconftool=/usr/bin/mateconftool-2
+
+MATECONF_CONFIG_SOURCE=`$mateconftool --get-default-source`;
+export MATECONF_CONFIG_SOURCE
+
+sed -n 's/^+//p' | xargs $mateconftool --makefile-install-rule >/dev/null
