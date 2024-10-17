@@ -11,7 +11,7 @@ Version:	1.4.0
 Release:	1
 License:	GPLv3+
 Group:		Graphical desktop/Other
-URL:		http://www.mate-desktop.org
+URL:		https://www.mate-desktop.org
 Source0:	http://pub.mate-desktop.org/releases/1.4/%{name}-%{version}.tar.xz
 Source1:	mateconf.sh
 Source2:	mateconf.csh
