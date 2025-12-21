@@ -20,6 +20,11 @@ Source4:	mateconf-schemas.script
 Patch0:		mate-conf-1.2.1-configure.patch
 Patch1:		mate-conf-1.2.1-m4.patch
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	gtk-doc
 BuildRequires:	intltool
 BuildRequires:	mate-common
